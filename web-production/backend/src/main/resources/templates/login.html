@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- External styles -->
+    <link rel="stylesheet" href="/endpoints/css/style.css">
+
+    <!-- JavaScript for form validation -->
+    <script>
+        // Hàm kiểm tra tính hợp lệ của thông tin đăng nhập
+        function validateForm(event) {
+            event.preventDefault();  // Ngừng hành động mặc định (gửi form)
+
+            // Lấy giá trị của các trường input
+            const username = document.getElementById("ten").value;
+            const password = document.getElementById("password").value;
+
+            // Kiểm tra xem người dùng đã nhập tên người dùng và mật khẩu chưa
+            if (!username || !password) {
+                alert("Username and Password are required!");
+                return;  // Dừng lại nếu không hợp lệ
+            }
+
+            // Kiểm tra tên người dùng: ít nhất 3 ký tự (có thể điều chỉnh theo yêu cầu của bạn)
+            if (username.length < 3) {
+                alert("Username must be at least 3 characters long.");
+                return;
+            }
+
+            // Kiểm tra mật khẩu: ít nhất 6 ký tự (có thể điều chỉnh theo yêu cầu của bạn)
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long.");
+                return;
+            }
+
+            // Nếu tất cả hợp lệ, gửi form
+            document.querySelector("form").submit();  // Gửi form nếu dữ liệu hợp lệ
+        }
+
+        // Gắn sự kiện khi form submit
+        window.onload = function () {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', validateForm);
+
+            // Hiển thị alert nếu có lỗi
+            const errorMessage = /*[[${error}]]*/ '';  // Thymeleaf sẽ thay thế thông báo lỗi tại đây
+            if (errorMessage) {
+                alert(errorMessage);  // Hiển thị thông báo lỗi dưới dạng alert
+            }
+        }
+    </script>
+
+</head>
+<body>
+<section>
+    <form action="/endpoints/req/login" method="POST">
+        <h1>Login</h1>
+
+        <!-- Error Message -->
+        <div class="dialog-row">
+            <!-- Hiển thị thông báo lỗi nếu có -->
+            <label th:if="${error}" th:text="${error}" class="text-center redText"></label>
+        </div>
+
+
+        <div class="inputbox">
+            <ion-icon name="person-outline"></ion-icon>
+            <input name="username" id="ten" type="text" required>
+            <label for="ten">Username</label>
+        </div>
+
+        <div class="inputbox">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <input name="password" type="password" id="password" required>
+            <label for="password">Password</label>
+        </div>
+
+
+        <div class="register">
+            <p><a href="#">Forget Password?</a></p>
+        </div>
+
+
+        <button type="submit">Log in</button>
+
+
+        <div class="register">
+            <p>Don't have an account? <a href="/endpoints/req/signup">Register!!</a></p>
+        </div>
+    </form>
+</section>
+</body>
+</html>
