@@ -75,7 +75,7 @@ services:
       if [ ! -f /frontend/first_run_flag ]; then
       echo 'First run detected, installing dependencies...';
       cd /frontend && npm install && npm run build;
-      pm2 start 'npx serve dist' --name web;
+      pm2 start 'serve -s dist' --name web;
       touch /frontend/first_run_flag;
       pm2 save;
       pm2 logs;
